@@ -20,7 +20,7 @@ public class CameraSelectionController : MonoBehaviour {
     void Start()
     {
         playerUnitHolder = this.gameObject.GetComponent<PlayerUnitHolder>();
-        //Setup Texture
+        //Setup Dragging Texture
         draggingTexture = new Texture2D(1, 1);
         draggingTexture.SetPixel(0, 0, draggingTextureColor);//Upper left pixel color
         draggingTexture.Apply();
