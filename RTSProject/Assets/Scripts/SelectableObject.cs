@@ -14,4 +14,9 @@ public class SelectableObject : MonoBehaviour {
     {
         //right click action
     }
+
+    public virtual void SKeyAction()
+    {
+        //s key action
+    }
 }

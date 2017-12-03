@@ -61,6 +61,7 @@ public class UnitBlueprint : SelectableObject
     public override void RightClickAction(Vector3 clickPosition, bool shiftActivated)
     {
         //DO RIGHT CLICK ACTION
+        navAgent.isStopped = false;
         base.RightClickAction(clickPosition, shiftActivated);
         if(!shiftActivated)
         {
@@ -74,6 +75,16 @@ public class UnitBlueprint : SelectableObject
             currentDestination = destinations[0];
         }
         navAgent.destination = currentDestination;
+    }
+
+    public override void SKeyAction()
+    {
+        base.SKeyAction();
+        if(CheckWalking())
+        {
+            navAgent.isStopped = true;
+            destinations.Clear();
+        }
     }
 
     private bool CheckWalking()

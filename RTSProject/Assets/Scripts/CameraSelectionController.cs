@@ -30,11 +30,9 @@ public class CameraSelectionController : MonoBehaviour {
         #region Force Right click action
         if(Input.GetKeyDown(KeyCode.Mouse1))
         {
-            Debug.Log("Right Click should be called once");
             if(!(selectedUnits.Count <= 0))
             {
                 bool shift = Input.GetKey(KeyCode.LeftShift);
-                Debug.Log("Shift was pressed ?" + shift);
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if(Physics.Raycast(ray, out hit))
@@ -63,6 +61,18 @@ public class CameraSelectionController : MonoBehaviour {
             AddUnitsToSelection();
             if (Input.GetKeyUp(KeyCode.Mouse0)){
                 ResetSelectionRectangle();
+            }
+        }
+        #endregion
+        #region "S" Key Action
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if(selectedUnits.Count > 0)
+            {
+                foreach(GameObject gameObject in selectedUnits)
+                {
+                    gameObject.GetComponent<SelectableObject>().SKeyAction();
+                }
             }
         }
         #endregion

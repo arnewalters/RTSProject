@@ -54,6 +54,11 @@ public class Building : SelectableObject
         SetupLineRenderer();
     }
 
+    public override void SKeyAction()
+    {
+        base.SKeyAction();
+    }
+
     private void SetupLineRenderer()
     {
         int vertexCount = destinationPoints.Count;
