@@ -27,6 +27,31 @@ public class CameraSelectionController : MonoBehaviour {
     }
 
     void Update() {
+        #region Force Right click action
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            Debug.Log("Right Click should be called once");
+            if(!(selectedUnits.Count <= 0))
+            {
+                bool shift = Input.GetKey(KeyCode.LeftShift);
+                Debug.Log("Shift was pressed ?" + shift);
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if(Physics.Raycast(ray, out hit))
+                { 
+                    Transform objectHit = hit.transform;
+                    if (objectHit.tag == "Ground")
+                    {
+                        foreach (GameObject gameObject in selectedUnits)
+                        {
+                            gameObject.GetComponent<SelectableObject>().RightClickAction(hit.point, shift);
+                        }
+                    }
+                    
+                }
+            }
+        }
+        #endregion
         #region Create Selection Rectangle And Call SelectFromRectangle
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             beginDragPoint = Input.mousePosition;
@@ -35,7 +60,7 @@ public class CameraSelectionController : MonoBehaviour {
         if (isSelecting){
             endDragPoint = Input.mousePosition;
             selectionRectangle = GetScreenRect(beginDragPoint, endDragPoint);
-
+            AddUnitsToSelection();
             if (Input.GetKeyUp(KeyCode.Mouse0)){
                 ResetSelectionRectangle();
             }
@@ -43,6 +68,7 @@ public class CameraSelectionController : MonoBehaviour {
         #endregion
     }
 
+    #region Select and Deselect
     public void AddUnitsToSelection()
     {
         if (!isSelecting) return;
@@ -52,14 +78,27 @@ public class CameraSelectionController : MonoBehaviour {
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
+            foreach(GameObject unit in selectedUnits)
+            {
+                //Selected Units getting deselected
+                unit.GetComponent<SelectableObject>().Select(false);
+            }
+            //Clearing selected Units
             selectedUnits.Clear();
         }
 
-        for(int index = 0; index < playerUnitHolder.myUnits.Count; index++)
+        for(int index = 0; index < playerUnitHolder.mySelectables.Count; index++)
         {
-            GameObject currentUnit = playerUnitHolder.myUnits[index];
-            if (viewportBounds.Contains(mainCamera.WorldToViewportPoint(currentUnit.transform.position))){
-                selectedUnits.Add(currentUnit);
+            GameObject currentUnit = playerUnitHolder.mySelectables[index];
+            SelectableObject unitScript = currentUnit.GetComponent<SelectableObject>();
+            if (unitScript != null)
+            { 
+                if (viewportBounds.Contains(mainCamera.WorldToViewportPoint(currentUnit.transform.position)))
+                {
+                    //Unit is actually getting selected
+                    selectedUnits.Add(currentUnit);
+                    currentUnit.GetComponent<SelectableObject>().Select(true);
+                }
             }
         }
     }
@@ -69,12 +108,7 @@ public class CameraSelectionController : MonoBehaviour {
         isSelecting = false;
         selectionRectangle = new Rect(0, 0, 0, 0);
     }
-
-    void OnGUI(){
-        if(isSelecting){
-            GUI.Box(selectionRectangle, draggingTexture);
-        }
-    }
+    #endregion
 
     #region Rect Helper
     public static Rect GetScreenRect(Vector3 screenPosition1, Vector3 screenPosition2)
@@ -103,4 +137,12 @@ public class CameraSelectionController : MonoBehaviour {
         return bounds;
     }
     #endregion
+
+    void OnGUI()
+    {
+        if (isSelecting)
+        {
+            GUI.Box(selectionRectangle, draggingTexture);
+        }
+    }
 }
