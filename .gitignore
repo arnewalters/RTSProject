@@ -6,6 +6,7 @@
 Assets/AssetStoreTools*
 
 # Visual Studio 2015 cache directory
+.vs/
 /.vs/
 /.vs/RTSProject/v15/Server/sqlite3
 /.vs/RTSProject/v15/Server/*.ide
