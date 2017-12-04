@@ -6,17 +6,25 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour {
 
-    public GameObject playButton;
-    public GameObject settingsButton;
-    public GameObject mapEditorButton;
-    public GameObject quitButton;
+    private Button playButton;
+    private Button settingsButton;
+    private Button mapEditorButton;
+    private Button quitButton;
 
     void Start()
     {
-        playButton = GameObject.FindGameObjectWithTag("playButton");
-        settingsButton = GameObject.FindGameObjectWithTag("settingsButton");
-        mapEditorButton = GameObject.FindGameObjectWithTag("mapEditorButton");
-        quitButton = GameObject.FindGameObjectWithTag("quitButton");
+        #region Get Buttons
+        playButton = GameObject.FindGameObjectWithTag("playButton").GetComponent<Button>();
+        settingsButton = GameObject.FindGameObjectWithTag("settingsButton").GetComponent<Button>();
+        mapEditorButton = GameObject.FindGameObjectWithTag("mapEditorButton").GetComponent<Button>();
+        quitButton = GameObject.FindGameObjectWithTag("quitButton").GetComponent<Button>();
+        #endregion
+        #region Add onClick Listeners
+        playButton.onClick.AddListener(PlayButtonClicked);
+        settingsButton.onClick.AddListener(SettingsButtonClicked);
+        mapEditorButton.onClick.AddListener(MapEditorButtonClicked);
+        quitButton.onClick.AddListener(QuitButtonClicked);
+        #endregion 
     }
 
     public void PlayButtonClicked()
