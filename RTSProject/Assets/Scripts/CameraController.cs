@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour {
+
     //SETTINGS
     public bool dragViewByKeys = true;
     public bool dragViewByMouse = true;
@@ -16,28 +17,28 @@ public class CameraController : MonoBehaviour {
 
     //SCROLLING
     public float scrollSpeed = 10f;
-	
-	void Update () {
+
+    void Update () {
         //The new Position gets affected by every input and is set 
         //After the Update is done so every frame.
         Vector3 newPosition = this.transform.position;
         //Modification for X and Z movement -> left,right and forward,backward
         #region Movement
-        if ((Input.GetKey("w") && dragViewByKeys) || (Input.mousePosition.y >= Screen.height - scrollBorderWidth && dragViewByMouse)) {
+        if ((Input.GetKey(KeyManager.instance.moveCameraUpKey) && dragViewByKeys) || (Input.mousePosition.y >= Screen.height - scrollBorderWidth && dragViewByMouse)) {
             // += Z -> Forward
             newPosition.z += dragSpeed * Time.deltaTime;
         }
-        if ((Input.GetKey("s") && dragViewByKeys) || (Input.mousePosition.y <= scrollBorderWidth && dragViewByMouse))
+        if ((Input.GetKey(KeyManager.instance.moveCameraDownKey) && dragViewByKeys) || (Input.mousePosition.y <= scrollBorderWidth && dragViewByMouse))
         {
             // -= Z -> Backward
             newPosition.z -= dragSpeed * Time.deltaTime;
         }
-        if ((Input.GetKey("a") && dragViewByKeys) || (Input.mousePosition.x <= scrollBorderWidth && dragViewByMouse))
+        if ((Input.GetKey(KeyManager.instance.moveCameraLeftKey) && dragViewByKeys) || (Input.mousePosition.x <= scrollBorderWidth && dragViewByMouse))
         {
             // -= X -> Left
             newPosition.x -= dragSpeed * Time.deltaTime;
         }
-        if ((Input.GetKey("d") && dragViewByKeys) || (Input.mousePosition.x >= Screen.width - scrollBorderWidth && dragViewByMouse))
+        if ((Input.GetKey(KeyManager.instance.moveCameraRightKey) && dragViewByKeys) || (Input.mousePosition.x >= Screen.width - scrollBorderWidth && dragViewByMouse))
         {
             // += X -> Right
             newPosition.x += dragSpeed * Time.deltaTime;

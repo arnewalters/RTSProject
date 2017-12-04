@@ -28,11 +28,11 @@ public class CameraSelectionController : MonoBehaviour {
 
     void Update() {
         #region Force Right click action
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        if(Input.GetKeyDown(KeyManager.instance.rightClickKey))
         {
             if(!(selectedUnits.Count <= 0))
             {
-                bool shift = Input.GetKey(KeyCode.LeftShift);
+                bool shift = Input.GetKey(KeyManager.instance.shiftKey);
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if(Physics.Raycast(ray, out hit))
@@ -51,7 +51,7 @@ public class CameraSelectionController : MonoBehaviour {
         }
         #endregion
         #region Create Selection Rectangle And Call SelectFromRectangle
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+        if (Input.GetKeyDown(KeyManager.instance.leftClickKey)) {
             beginDragPoint = Input.mousePosition;
             isSelecting = true;
         }
@@ -59,13 +59,13 @@ public class CameraSelectionController : MonoBehaviour {
             endDragPoint = Input.mousePosition;
             selectionRectangle = GetScreenRect(beginDragPoint, endDragPoint);
             AddUnitsToSelection();
-            if (Input.GetKeyUp(KeyCode.Mouse0)){
+            if (Input.GetKeyUp(KeyManager.instance.leftClickKey)){
                 ResetSelectionRectangle();
             }
         }
         #endregion
         #region "S" Key Action
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyManager.instance.stopActionKey))
         {
             if(selectedUnits.Count > 0)
             {
@@ -86,7 +86,7 @@ public class CameraSelectionController : MonoBehaviour {
         Camera mainCamera = Camera.main;
         var viewportBounds = GetViewportBounds(mainCamera, beginDragPoint, endDragPoint);
 
-        if (!Input.GetKey(KeyCode.LeftShift))
+        if (!Input.GetKey(KeyManager.instance.shiftKey))
         {
             foreach(GameObject unit in selectedUnits)
             {
