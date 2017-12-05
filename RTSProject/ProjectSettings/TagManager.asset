@@ -11,6 +11,9 @@ TagManager:
   - settingsButton
   - mapEditorButton
   - quitButton
+  - widthTextfield
+  - lengthTextfield
+  - generateMapButton
   layers:
   - Default
   - TransparentFX

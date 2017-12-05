@@ -8,6 +8,7 @@ public class MapEditorController : MonoBehaviour {
     //Map Editor UI
     private InputField widthTextfield;
     private InputField lengthTextfield;
+    private Button generateMapButton;
 
     //Map Settings
     public int mapSizeWidth = 10;
@@ -23,12 +24,14 @@ public class MapEditorController : MonoBehaviour {
     {
         widthTextfield = GameObject.FindGameObjectWithTag("widthTextfield").GetComponent<InputField>();
         lengthTextfield = GameObject.FindGameObjectWithTag("lengthTextfield").GetComponent<InputField>();
+        generateMapButton = GameObject.FindGameObjectWithTag("generateMapButton").GetComponent<Button>();
 
         widthTextfield.contentType = InputField.ContentType.IntegerNumber;
         lengthTextfield.contentType = InputField.ContentType.IntegerNumber;
 
         widthTextfield.onValueChanged.AddListener(SetMapWidth);
         lengthTextfield.onValueChanged.AddListener(SetMapLength);
+        generateMapButton.onClick.AddListener(CreateNewMap);
     }
 
     public void SetMapWidth(string newWidth)
@@ -71,12 +74,14 @@ public class MapEditorController : MonoBehaviour {
 
     public void CreateNewMap()
     {
+        Debug.Log("Generating Map..");
         for(int index = 0; index < mapSizeWidth; index++)
         {
             for(int bindex = 0; bindex < mapSizeLength; bindex++)
             {
-
+                Instantiate(mapGridTile, new Vector3(index * 5, 0, bindex * 5), new Quaternion(0, 0, 0, 0));
             }
         }
+        Debug.Log("Done generating map!");
     }
 }
