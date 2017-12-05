@@ -30,7 +30,7 @@ public class MapEditorController : MonoBehaviour {
 
     public void SetMapWidth(string newWidth)
     {
-        if (CheckForNumeric(newLength))
+        if (CheckForNumeric(newWidth))
         {
             mapSizeWidth = StringToInt(newWidth);
             return;
@@ -48,10 +48,17 @@ public class MapEditorController : MonoBehaviour {
         OpenWarningWrongInput();
     }
 
+    public bool CheckForNumeric(string stringToCheck)
+    {
+        int number;
+        return int.TryParse(stringToCheck, out number);
+    }
+
     public int StringToInt(string toInt)
     {
-        //TODO RETURN INTEGER VALUE OF STRING
-        return 20;
+        int number;
+        int.TryParse(toInt, out number);
+        return number;
     }
 
     public void OpenWarningWrongInput()
