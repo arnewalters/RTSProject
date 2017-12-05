@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class MapEditorController : MonoBehaviour {
 
     //Map Editor UI
-    private TextField widthTextfield;
-    private TextField lengthTextfield;
+    private InputField widthTextfield;
+    private InputField lengthTextfield;
 
     //Map Settings
     public int mapSizeWidth = 10;
@@ -21,11 +21,14 @@ public class MapEditorController : MonoBehaviour {
 
     void Start()
     {
-        widthTextfield = GameObject.FindGameObjectWithTag("widthTextfield").GetComponent<TextField>();
-        lengthTextfield = GameObject.FindGameObjectWithTag("lengthTextfield").GetComponent<TextField>();
+        widthTextfield = GameObject.FindGameObjectWithTag("widthTextfield").GetComponent<InputField>();
+        lengthTextfield = GameObject.FindGameObjectWithTag("lengthTextfield").GetComponent<InputField>();
 
-        widthTextfield.onTextChanged.AddListener(SetMapWidth);
-        lengthTextfield.onTextChanged.AddListener(SetMapLength);
+        widthTextfield.contentType = InputField.ContentType.IntegerNumber;
+        lengthTextfield.contentType = InputField.ContentType.IntegerNumber;
+
+        widthTextfield.onValueChanged.AddListener(SetMapWidth);
+        lengthTextfield.onValueChanged.AddListener(SetMapLength);
     }
 
     public void SetMapWidth(string newWidth)
