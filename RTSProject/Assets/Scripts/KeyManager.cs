@@ -27,8 +27,21 @@ public class KeyManager : MonoBehaviour {
     public KeyCode buildBarrackKey = KeyCode.S;
     public KeyCode buildSupplyHouse = KeyCode.E;
 
+    //UNIT STORE HOTKEYS
+    public KeyCode setUnitHotkey = KeyCode.LeftControl;
+    public List<KeyCode> unitListHotkeys;
+
     void Awake()
     {
+        unitListHotkeys = new List<KeyCode>();
+        unitListHotkeys.Add(KeyCode.Alpha1);
+        unitListHotkeys.Add(KeyCode.Alpha2);
+        unitListHotkeys.Add(KeyCode.Alpha3);
+        unitListHotkeys.Add(KeyCode.Alpha4);
+        unitListHotkeys.Add(KeyCode.Alpha5);
+        unitListHotkeys.Add(KeyCode.Alpha6);
+        unitListHotkeys.Add(KeyCode.Alpha7);
+
         #region Validate KeyManager instance
         if (instance == null)
         {

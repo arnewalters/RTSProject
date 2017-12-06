@@ -76,6 +76,49 @@ public class CameraSelectionController : MonoBehaviour {
             }
         }
         #endregion
+        #region Add SelectedUnits to Hotkeys
+        if(selectedUnits.Count > 0)
+        {
+            if (Input.GetKey(KeyManager.instance.setUnitHotkey))
+            {
+                int index = 0;
+                foreach(KeyCode keycode in KeyManager.instance.unitListHotkeys)
+                {
+                    if (Input.GetKeyDown(keycode))
+                    {
+                        UnitHotkeyManager.instance.unitLists[index] = selectedUnits;
+                    }
+                    index++;
+                }
+            }
+        }
+        #endregion
+        #region Get hotkey units
+        for(int i = 0; i < UnitHotkeyManager.instance.unitLists.Count; i++)
+        {
+            if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[i]))
+            {
+                bool shiftKeyPressed = Input.GetKey(KeyManager.instance.shiftKey);
+                GetHotkeyUnitsFor(i, shiftKeyPressed);
+            }
+        }
+        #endregion
+    }
+
+    private void GetHotkeyUnitsFor(int index, bool shiftKeyPressed)
+    {
+        if (!shiftKeyPressed)
+        {
+            selectedUnits.Clear();
+            selectedUnits = UnitHotkeyManager.instance.unitLists[index];
+        }
+        else
+        {
+            foreach(GameObject gameobject in UnitHotkeyManager.instance.unitLists[index])
+            {
+                selectedUnits.Add(gameobject);
+            }
+        }
     }
 
     #region Select and Deselect
