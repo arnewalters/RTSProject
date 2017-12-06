@@ -74,6 +74,7 @@ public class MapEditorController : MonoBehaviour {
 
     public void CreateNewMap()
     {
+        //TODO ADD TO PARENT TO CLEAR ROWS IF LESS THAN BEFORE
         Debug.Log("Generating Map..");
         for(int index = 0; index < mapSizeWidth; index++)
         {
