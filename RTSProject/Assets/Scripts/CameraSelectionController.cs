@@ -84,8 +84,9 @@ public class CameraSelectionController : MonoBehaviour {
                 int index = 0;
                 foreach(KeyCode keycode in KeyManager.instance.unitListHotkeys)
                 {
-                    if (Input.GetKeyDown(keycode))
+                    if (Input.GetKey(keycode))
                     {
+                        Debug.Log("Added Unit to hotkey..");
                         UnitHotkeyManager.instance.unitLists[index] = selectedUnits;
                     }
                     index++;
@@ -98,6 +99,7 @@ public class CameraSelectionController : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[i]))
             {
+                Debug.Log("GetHotkeyUnits pressed !=");
                 bool shiftKeyPressed = Input.GetKey(KeyManager.instance.shiftKey);
                 GetHotkeyUnitsFor(i, shiftKeyPressed);
             }
@@ -107,10 +109,8 @@ public class CameraSelectionController : MonoBehaviour {
 
     private void GetHotkeyUnitsFor(int index, bool shiftKeyPressed)
     {
-        Debug.Log("GetHotkeyUnits..");
         if (!shiftKeyPressed)
         {
-            Debug.Log("Not pressing shift");
             DeselectAllUnits();
             Debug.Log("New count is " + UnitHotkeyManager.instance.unitLists[index].Count);
             selectedUnits = UnitHotkeyManager.instance.unitLists[index];
@@ -131,8 +131,9 @@ public class CameraSelectionController : MonoBehaviour {
         foreach(GameObject curUnit in selectedUnits)
         {
             curUnit.GetComponent<SelectableObject>().Select(false);
-            selectedUnits.Remove(curUnit);
         }
+        selectedUnits.Clear();
+        Debug.Log("Deselected all selected Units.");
     }
 
     public void SetSelectedTrueForAll()
@@ -147,7 +148,7 @@ public class CameraSelectionController : MonoBehaviour {
     public void AddUnitsToSelection()
     {
         if (!isSelecting) return;
-        
+
         Camera mainCamera = Camera.main;
         var viewportBounds = GetViewportBounds(mainCamera, beginDragPoint, endDragPoint);
 
