@@ -94,7 +94,7 @@ public class CameraSelectionController : MonoBehaviour {
         }
         #endregion
         #region Get hotkey units
-        for(int i = 0; i < UnitHotkeyManager.instance.unitLists.Count; i++)
+        for (int i = 0; i < UnitHotkeyManager.instance.unitLists.Count; i++)
         {
             if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[i]))
             {
@@ -107,17 +107,39 @@ public class CameraSelectionController : MonoBehaviour {
 
     private void GetHotkeyUnitsFor(int index, bool shiftKeyPressed)
     {
+        Debug.Log("GetHotkeyUnits..");
         if (!shiftKeyPressed)
         {
-            selectedUnits.Clear();
+            Debug.Log("Not pressing shift");
+            DeselectAllUnits();
+            Debug.Log("New count is " + UnitHotkeyManager.instance.unitLists[index].Count);
             selectedUnits = UnitHotkeyManager.instance.unitLists[index];
+            SetSelectedTrueForAll();
         }
         else
         {
             foreach(GameObject gameobject in UnitHotkeyManager.instance.unitLists[index])
             {
                 selectedUnits.Add(gameobject);
+                gameobject.GetComponent<SelectableObject>().Select(true);
             }
+        }
+    }
+
+    public void DeselectAllUnits()
+    {
+        foreach(GameObject curUnit in selectedUnits)
+        {
+            curUnit.GetComponent<SelectableObject>().Select(false);
+            selectedUnits.Remove(curUnit);
+        }
+    }
+
+    public void SetSelectedTrueForAll()
+    {
+        foreach(GameObject curUnit in selectedUnits)
+        {
+            curUnit.GetComponent<SelectableObject>().Select(true);
         }
     }
 

@@ -33,14 +33,15 @@ public class KeyManager : MonoBehaviour {
 
     void Awake()
     {
-        unitListHotkeys = new List<KeyCode>();
-        unitListHotkeys.Add(KeyCode.Alpha1);
-        unitListHotkeys.Add(KeyCode.Alpha2);
-        unitListHotkeys.Add(KeyCode.Alpha3);
-        unitListHotkeys.Add(KeyCode.Alpha4);
-        unitListHotkeys.Add(KeyCode.Alpha5);
-        unitListHotkeys.Add(KeyCode.Alpha6);
-        unitListHotkeys.Add(KeyCode.Alpha7);
+        unitListHotkeys = new List<KeyCode>{
+            KeyCode.Alpha1,
+            KeyCode.Alpha2,
+            KeyCode.Alpha3,
+            KeyCode.Alpha4,
+            KeyCode.Alpha5,
+            KeyCode.Alpha6,
+            KeyCode.Alpha7
+        };
 
         #region Validate KeyManager instance
         if (instance == null)
