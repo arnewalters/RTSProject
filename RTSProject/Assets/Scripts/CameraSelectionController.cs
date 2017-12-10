@@ -85,9 +85,10 @@ public class CameraSelectionController : MonoBehaviour {
                 {
                     if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[index]))
                     {
-                        Debug.Log("Added Unit to hotkey.." + selectedUnits.Count + " at Index ->" + index);
-                        UnitHotkeyManager.instance.unitLists[index] = selectedUnits;
-                        Debug.Log("New count is ->" + UnitHotkeyManager.instance.unitLists[index].Count);
+                        foreach(GameObject unit in selectedUnits)
+                        {
+                            UnitHotkeyManager.instance.unitLists[index].Add(unit);
+                        }
                     }
                 }
             }
@@ -113,8 +114,10 @@ public class CameraSelectionController : MonoBehaviour {
         if (!shiftKeyPressed)
         {
             DeselectAllUnits();
-            Debug.Log("New count is " + UnitHotkeyManager.instance.unitLists[index].Count + "For index  ->" + index);
-            selectedUnits = UnitHotkeyManager.instance.unitLists[index];
+            foreach(GameObject unit in UnitHotkeyManager.instance.unitLists[index])
+            {
+                selectedUnits.Add(unit);
+            }
             SetSelectedTrueForAll();
         }
         else
