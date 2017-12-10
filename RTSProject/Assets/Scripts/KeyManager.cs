@@ -28,7 +28,7 @@ public class KeyManager : MonoBehaviour {
     public KeyCode buildSupplyHouse = KeyCode.E;
 
     //UNIT STORE HOTKEYS
-    public KeyCode setUnitHotkey = KeyCode.LeftControl;
+    public KeyCode setUnitHotkey = KeyCode.L;
     public List<KeyCode> unitListHotkeys;
 
     void Awake()

@@ -81,27 +81,28 @@ public class CameraSelectionController : MonoBehaviour {
         {
             if (Input.GetKey(KeyManager.instance.setUnitHotkey))
             {
-                int index = 0;
-                foreach(KeyCode keycode in KeyManager.instance.unitListHotkeys)
+                for(int index = 0; index < KeyManager.instance.unitListHotkeys.Count; index++)
                 {
-                    if (Input.GetKey(keycode))
+                    if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[index]))
                     {
-                        Debug.Log("Added Unit to hotkey..");
+                        Debug.Log("Added Unit to hotkey.." + selectedUnits.Count + " at Index ->" + index);
                         UnitHotkeyManager.instance.unitLists[index] = selectedUnits;
+                        Debug.Log("New count is ->" + UnitHotkeyManager.instance.unitLists[index].Count);
                     }
-                    index++;
                 }
             }
         }
         #endregion
         #region Get hotkey units
-        for (int i = 0; i < UnitHotkeyManager.instance.unitLists.Count; i++)
+        if (!Input.GetKey(KeyManager.instance.setUnitHotkey))
         {
-            if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[i]))
+            for (int i = 0; i < UnitHotkeyManager.instance.unitLists.Count; i++)
             {
-                Debug.Log("GetHotkeyUnits pressed !=");
-                bool shiftKeyPressed = Input.GetKey(KeyManager.instance.shiftKey);
-                GetHotkeyUnitsFor(i, shiftKeyPressed);
+                if (Input.GetKeyDown(KeyManager.instance.unitListHotkeys[i]))
+                {
+                    bool shiftKeyPressed = Input.GetKey(KeyManager.instance.shiftKey);
+                    GetHotkeyUnitsFor(i, shiftKeyPressed);
+                }
             }
         }
         #endregion
@@ -112,7 +113,7 @@ public class CameraSelectionController : MonoBehaviour {
         if (!shiftKeyPressed)
         {
             DeselectAllUnits();
-            Debug.Log("New count is " + UnitHotkeyManager.instance.unitLists[index].Count);
+            Debug.Log("New count is " + UnitHotkeyManager.instance.unitLists[index].Count + "For index  ->" + index);
             selectedUnits = UnitHotkeyManager.instance.unitLists[index];
             SetSelectedTrueForAll();
         }
