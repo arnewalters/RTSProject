@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 114815879750472092}
   - component: {fileID: 114266927636034306}
   - component: {fileID: 114699825894894704}
+  - component: {fileID: 114462674940787706}
+  - component: {fileID: 114060203206567002}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -39,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1108981307793522}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 20, z: -10}
+  m_LocalPosition: {x: 0, y: 30, z: -22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -87,6 +89,18 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1108981307793522}
   m_Enabled: 1
+--- !u!114 &114060203206567002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1108981307793522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 9b8c9df4bad0ed646b49589a0aa28517, type: 2}
 --- !u!114 &114266927636034306
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -102,6 +116,18 @@ MonoBehaviour:
   isSelecting: 0
   draggingTextureColor: {r: 1, g: 1, b: 1, a: 0}
   playerUnitHolder: {fileID: 0}
+--- !u!114 &114462674940787706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1108981307793522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 989be3619ba27ba4588e68c856610142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listCount: 7
 --- !u!114 &114699825894894704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,8 +139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99437e757aafd654fb86bfdf188fab3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myUnits: []
-  myBuildings: []
+  mySelectables:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114815879750472092
 MonoBehaviour:
   m_ObjectHideFlags: 1
