@@ -13,6 +13,13 @@ public class SelectableObject : MonoBehaviour {
     public virtual void RightClickAction(Vector3 clickPosition, bool shiftActivated)
     {
         //right click action
+        Debug.Log("Right click action for mouse position called");
+    }
+
+    public virtual void RightClickAction(Transform target, bool shiftActivated)
+    {
+        //right click action
+        Debug.Log("Right click action for target called");
     }
 
     public virtual void SKeyAction()

@@ -45,6 +45,13 @@ public class CameraSelectionController : MonoBehaviour {
                             gameObject.GetComponent<SelectableObject>().RightClickAction(hit.point, shift);
                         }
                     }
+                    else if(objectHit.GetComponent<SelectableObject>() != null)
+                    {
+                        foreach (GameObject gameObject in selectedUnits)
+                        {
+                            gameObject.GetComponent<SelectableObject>().RightClickAction(objectHit.transform, shift);
+                        }
+                    }
                     
                 }
             }
@@ -137,7 +144,6 @@ public class CameraSelectionController : MonoBehaviour {
             curUnit.GetComponent<SelectableObject>().Select(false);
         }
         selectedUnits.Clear();
-        Debug.Log("Deselected all selected Units.");
     }
 
     public void SetSelectedTrueForAll()

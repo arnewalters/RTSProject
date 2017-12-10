@@ -19,6 +19,7 @@ public class UnitBlueprint : SelectableObject
     public List<Vector3> destinations;
     public Vector3 currentDestination;
     private bool isWalking;
+    private GameObject targetObject;
 
     void Start()
     {
@@ -74,6 +75,26 @@ public class UnitBlueprint : SelectableObject
             destinations.Add(clickPosition);
             currentDestination = destinations[0];
         }
+        navAgent.destination = currentDestination;
+    }
+
+    public override void RightClickAction(Transform target, bool shiftActivated)
+    {
+        //DO RIGHT CLICK ACTION
+        navAgent.isStopped = false;
+        base.RightClickAction(target, shiftActivated);
+        if (!shiftActivated)
+        {
+            destinations.Clear();
+            destinations.Add(target.position);
+            currentDestination = destinations[0];
+        }
+        else
+        {
+            destinations.Add(target.position);
+            currentDestination = destinations[0];
+        }
+        this.targetObject = target.gameObject;
         navAgent.destination = currentDestination;
     }
 
