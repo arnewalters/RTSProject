@@ -11,7 +11,13 @@ public class UnitHotkeyManager : MonoBehaviour {
 
     void Awake()
     {
-        if(instance == null)
+        unitLists = new List<List<GameObject>>();
+        for (int i = 0; i < listCount; i++)
+        {
+            List<GameObject> list = new List<GameObject>();
+            unitLists.Add(list);
+        }
+        if (instance == null)
         {
             instance = this;
         }
@@ -21,15 +27,5 @@ public class UnitHotkeyManager : MonoBehaviour {
         }
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(transform.gameObject);
-    }
-
-    void Start()
-    {
-        unitLists = new List<List<GameObject>>();
-        for (int i = 0; i < listCount; i++)
-        {
-            List<GameObject> list = new List<GameObject>();
-            unitLists.Add(list);
-        }
     }
 }
