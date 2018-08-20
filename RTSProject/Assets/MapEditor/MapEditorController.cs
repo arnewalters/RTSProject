@@ -5,7 +5,17 @@ using UnityEngine.UI;
 
 public class MapEditorController : MonoBehaviour {
 
+    //Public UI Colors
+    public Color activeTabColor;
+    public Color inactiveTabColor;
+
     //Map Editor UI
+    private GameObject mapTabGO;
+    private GameObject modelsTabGO;
+    private Button mapTabButton;
+    private Button modelsTabButton;
+    private GameObject mapPanel;
+    private GameObject modelsPanel;
     private InputField widthTextfield;
     private InputField lengthTextfield;
     private Button generateMapButton;
@@ -22,6 +32,13 @@ public class MapEditorController : MonoBehaviour {
 
     void Start()
     {
+        //Get UI Elements
+        mapTabGO = GameObject.FindGameObjectWithTag("mapTabButton");
+        modelsTabGO = GameObject.FindGameObjectWithTag("modelsTabButton");
+        mapTabButton = mapTabGO.GetComponent<Button>();
+        modelsTabButton = modelsTabGO.GetComponent<Button>();
+        mapPanel = GameObject.FindGameObjectWithTag("mapPanel");
+        modelsPanel = GameObject.FindGameObjectWithTag("modelsPanel");
         widthTextfield = GameObject.FindGameObjectWithTag("widthTextfield").GetComponent<InputField>();
         lengthTextfield = GameObject.FindGameObjectWithTag("lengthTextfield").GetComponent<InputField>();
         generateMapButton = GameObject.FindGameObjectWithTag("generateMapButton").GetComponent<Button>();
@@ -29,9 +46,13 @@ public class MapEditorController : MonoBehaviour {
         widthTextfield.contentType = InputField.ContentType.IntegerNumber;
         lengthTextfield.contentType = InputField.ContentType.IntegerNumber;
 
+        mapTabButton.onClick.AddListener(ChangeTabToMap);
+        modelsTabButton.onClick.AddListener(ChangeTabToModels);
         widthTextfield.onValueChanged.AddListener(SetMapWidth);
         lengthTextfield.onValueChanged.AddListener(SetMapLength);
         generateMapButton.onClick.AddListener(CreateNewMap);
+
+        this.ChangeTabToMap();
     }
 
     public void SetMapWidth(string newWidth)
@@ -52,6 +73,22 @@ public class MapEditorController : MonoBehaviour {
             return;
         }
         OpenWarningWrongInput();
+    }
+
+    public void ChangeTabToMap()
+    {
+        mapPanel.SetActive(true);
+        modelsPanel.SetActive(false);
+        mapTabGO.GetComponent<Image>().color = activeTabColor;
+        modelsTabGO.GetComponent<Image>().color = inactiveTabColor;
+    }
+
+    public void ChangeTabToModels()
+    {
+        mapPanel.SetActive(false);
+        modelsPanel.SetActive(true);
+        mapTabGO.GetComponent<Image>().color = inactiveTabColor;
+        modelsTabGO.GetComponent<Image>().color = activeTabColor;
     }
 
     public bool CheckForNumeric(string stringToCheck)
@@ -76,11 +113,16 @@ public class MapEditorController : MonoBehaviour {
     {
         //TODO ADD TO PARENT TO CLEAR ROWS IF LESS THAN BEFORE
         Debug.Log("Generating Map..");
+        bool colored = false;
         for(int index = 0; index < mapSizeWidth; index++)
         {
             for(int bindex = 0; bindex < mapSizeLength; bindex++)
             {
-                Instantiate(mapGridTile, new Vector3(index * 5, 0, bindex * 5), new Quaternion(0, 0, 0, 0));
+                GameObject tile = Instantiate(mapGridTile, new Vector3(index * 5, 0, bindex * 5), new Quaternion(0, 0, 0, 0));
+                colored = !colored;
+                if (colored) {
+                    tile.GetComponent<MeshRenderer>().material.color = inactiveTabColor;
+                }
             }
         }
         Debug.Log("Done generating map!");
