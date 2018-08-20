@@ -14,6 +14,10 @@ TagManager:
   - widthTextfield
   - lengthTextfield
   - generateMapButton
+  - mapTabButton
+  - modelsTabButton
+  - mapPanel
+  - modelsPanel
   layers:
   - Default
   - TransparentFX
