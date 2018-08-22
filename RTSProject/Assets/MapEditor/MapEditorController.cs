@@ -30,6 +30,10 @@ public class MapEditorController : MonoBehaviour {
     public List<GameObject> rampTiles;
     public List<GameObject> prefabs;
 
+    //Map
+    public List<GameObject> mapTiles;
+    public List<GameObject> mapObjects;
+
     void Start()
     {
         //Get UI Elements
@@ -126,5 +130,24 @@ public class MapEditorController : MonoBehaviour {
             }
         }
         Debug.Log("Done generating map!");
+    }
+
+    public string GetSaveableData()
+    {
+        string data = "";
+        foreach(GameObject GO in this.mapTiles)
+        {
+            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine() + "\r\n";
+        }
+        foreach (GameObject GO in this.mapObjects)
+        {
+            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine() + "\r\n";
+        }
+        return data;
+    }
+
+    public void CreateObjectFromData(string data)
+    {
+
     }
 }
