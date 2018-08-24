@@ -137,11 +137,11 @@ public class MapEditorController : MonoBehaviour {
         string data = "";
         foreach(GameObject GO in this.mapTiles)
         {
-            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine() + "\r\n";
+            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine(0,0,0) + "\r\n";
         }
         foreach (GameObject GO in this.mapObjects)
         {
-            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine() + "\r\n";
+            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine(0,0,0) + "\r\n";
         }
         return data;
     }
