@@ -37,6 +37,6 @@ public class SelectableObjectsUI : MonoBehaviour {
         }
         newPanel.GetComponentInChildren<Text>().text = so.prefabName;
         newPanel.GetComponent<Button>().onClick.AddListener(newPanel.GetComponent<SaveableObject>().SelectThisItem);
-        newPanel.transform.parent = listContent.transform;
+        newPanel.transform.SetParent(listContent.transform);
     }
 }

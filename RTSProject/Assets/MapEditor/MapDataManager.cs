@@ -19,9 +19,10 @@ public class MapDataManager : MonoBehaviour {
     public void SaveMapButtonPressed()
     {
         string data = mapEditorController.GetSaveableData();
-        string path = "Assets/Resources/" + newFileNameInputField.text + ".txt";
+        string path = "Assets/Maps/" + newFileNameInputField.text + "map" + ".txt";
         StreamWriter writer = new StreamWriter(path);
         writer.Write(data);
+        Debug.Log("Saved Map with string length = " + data.Length);
     }
 
     public void LoadMapButtonPressed(string fileName)

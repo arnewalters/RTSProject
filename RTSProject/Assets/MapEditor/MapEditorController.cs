@@ -30,7 +30,9 @@ public class MapEditorController : MonoBehaviour {
     public GameObject[,] mapTiles;
     public List<GameObject> mapObjects;
     #endregion
-
+    #region tempObject
+    private GameObject previewObject;
+    #endregion
     void Start()
     {
         //Get UI Elements
@@ -54,6 +56,45 @@ public class MapEditorController : MonoBehaviour {
         generateMapButton.onClick.AddListener(GenerateNewMap);
 
         this.ChangeTabToMap();
+    }
+
+    private void FixedUpdate()
+    {
+        if (selectedObject && !selectedObject.GetComponent<SaveableObject>().isTile)
+        {
+            this.PutObject();
+        }
+
+    }
+
+    private void PutObject()
+    {
+        if (!this.previewObject) {
+            this.previewObject = GameObject.Instantiate(selectedObject);
+            this.previewObject.layer = 2;
+        } 
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.transform.gameObject.GetComponent<SaveableObject>())
+            {
+                this.previewObject.transform.position = new Vector3(hit.point.x, hit.point.y + 1, hit.point.z);
+                this.previewObject.transform.rotation = hit.transform.rotation;
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    this.mapObjects.Add(GameObject.Instantiate(selectedObject, hit.point, hit.transform.rotation));
+                }
+            }
+            else if (this.previewObject)
+            {
+                Destroy(this.previewObject);
+            }
+        }
+        else if(this.previewObject)
+        {
+            Destroy(this.previewObject);
+        }
     }
 
     #region Map Generation
@@ -142,6 +183,7 @@ public class MapEditorController : MonoBehaviour {
     #region Save and Load Map
     public string GetSaveableData()
     {
+        Debug.Log("Getting saveable data");
         string data = "";
         for (int index = 0; index < mapSizeWidth; index++) {
             for (int bindex = 0; bindex < mapSizeLength; bindex++) {
@@ -152,6 +194,7 @@ public class MapEditorController : MonoBehaviour {
         {
             data += GO.GetComponent<SaveableObject>().ToSaveableDataLine(0,0) + "\r\n";
         }
+        Debug.Log("Returning saveable data");
         return data;
     }
 
