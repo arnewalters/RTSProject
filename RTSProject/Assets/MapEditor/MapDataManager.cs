@@ -19,7 +19,6 @@ public class MapDataManager : MonoBehaviour {
     public void SaveMapButtonPressed()
     {
         string data = mapEditorController.GetSaveableData();
-
         string path = "Assets/Resources/" + newFileNameInputField.text + ".txt";
         StreamWriter writer = new StreamWriter(path);
         writer.Write(data);
@@ -29,13 +28,12 @@ public class MapDataManager : MonoBehaviour {
     {
         string path = "Assets/Resources/" + fileName + ".txt";
         StreamReader reader = new StreamReader(path);
-
+        List<string> dataList = new List<string>();
         while (!reader.EndOfStream)
         {
-            string lineData = reader.ReadLine();
-            mapEditorController.CreateObjectFromData(lineData);
+            dataList.Add(reader.ReadLine());
         }
-        
+        mapEditorController.CreateMapFromData(dataList.ToArray());
         reader.Close();
     }
 }

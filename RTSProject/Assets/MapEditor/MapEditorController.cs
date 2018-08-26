@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MapEditorController : MonoBehaviour {
 
-    //Public UI Colors
+    #region Colors
     public Color activeTabColor;
     public Color inactiveTabColor;
-
-    //Map Editor UI
+    #endregion
+    #region UI
     private GameObject mapTabGO;
     private GameObject modelsTabGO;
     private Button mapTabButton;
@@ -19,20 +20,16 @@ public class MapEditorController : MonoBehaviour {
     private InputField widthTextfield;
     private InputField lengthTextfield;
     private Button generateMapButton;
-
-    //Map Settings
+    #endregion
+    #region Map Dimension
     public int mapSizeWidth = 10;
     public int mapSizeLength = 10;
-    public GameObject mapGridTile;
-
-    //Prefabs to choose from
-    public List<GameObject> tiles;
-    public List<GameObject> rampTiles;
-    public List<GameObject> prefabs;
-
-    //Map
-    public List<GameObject> mapTiles;
+    #endregion
+    #region Map tiles,objects
+    public GameObject selectedObject;
+    public GameObject[,] mapTiles;
     public List<GameObject> mapObjects;
+    #endregion
 
     void Start()
     {
@@ -54,16 +51,17 @@ public class MapEditorController : MonoBehaviour {
         modelsTabButton.onClick.AddListener(ChangeTabToModels);
         widthTextfield.onValueChanged.AddListener(SetMapWidth);
         lengthTextfield.onValueChanged.AddListener(SetMapLength);
-        generateMapButton.onClick.AddListener(CreateNewMap);
+        generateMapButton.onClick.AddListener(GenerateNewMap);
 
         this.ChangeTabToMap();
     }
 
+    #region Map Generation
     public void SetMapWidth(string newWidth)
     {
-        if (CheckForNumeric(newWidth))
+        if (MapHelper.CheckForNumeric(newWidth))
         {
-            mapSizeWidth = StringToInt(newWidth);
+            mapSizeWidth = MapHelper.StringToInt(newWidth);
             return;
         }
         OpenWarningWrongInput();
@@ -71,14 +69,54 @@ public class MapEditorController : MonoBehaviour {
 
     public void SetMapLength(string newLength)
     {
-        if(CheckForNumeric(newLength))
+        if(MapHelper.CheckForNumeric(newLength))
         {
-            mapSizeLength = StringToInt(newLength);
+            mapSizeLength = MapHelper.StringToInt(newLength);
             return;
         }
         OpenWarningWrongInput();
     }
 
+    public void GenerateNewMap()
+    {
+        Debug.Log("Generating Map..");
+        if (!selectedObject.GetComponent<SaveableObject>().isTile) {
+            Debug.Log("Choose a tile");
+            return;
+        }
+
+        this.mapTiles = new GameObject[mapSizeWidth, mapSizeLength];
+        bool colored = false;
+        for (int index = 0; index < mapSizeWidth; index++)
+        {
+            for (int bindex = 0; bindex < mapSizeLength; bindex++)
+            {
+                GameObject tile = Instantiate(selectedObject, new Vector3(index * 5, 0, bindex * 5), new Quaternion(0, 0, 0, 0));
+                colored = !colored;
+                if (colored)
+                {
+                    tile.GetComponent<MeshRenderer>().material.color = inactiveTabColor;
+                }
+                this.mapTiles[index, bindex] = tile;
+            }
+        }
+        Debug.Log("Done generating map!");
+    }
+
+    public void ClearMap()
+    {
+        Debug.Log("Clearing Map");
+        foreach (GameObject go in mapObjects) {
+            Destroy(go);
+        }
+        foreach (GameObject tile in mapTiles) {
+            Destroy(tile);
+        }
+        Debug.Log("Done clearing map!");
+    }
+    #endregion
+
+    #region UI Stuff
     public void ChangeTabToMap()
     {
         mapPanel.SetActive(true);
@@ -95,59 +133,42 @@ public class MapEditorController : MonoBehaviour {
         modelsTabGO.GetComponent<Image>().color = activeTabColor;
     }
 
-    public bool CheckForNumeric(string stringToCheck)
-    {
-        int number;
-        return int.TryParse(stringToCheck, out number);
-    }
-
-    public int StringToInt(string toInt)
-    {
-        int number;
-        int.TryParse(toInt, out number);
-        return number;
-    }
-
     public void OpenWarningWrongInput()
     {
         //TODO IMPLEMENT
     }
+    #endregion
 
-    public void CreateNewMap()
-    {
-        //TODO ADD TO PARENT TO CLEAR ROWS IF LESS THAN BEFORE
-        Debug.Log("Generating Map..");
-        bool colored = false;
-        for(int index = 0; index < mapSizeWidth; index++)
-        {
-            for(int bindex = 0; bindex < mapSizeLength; bindex++)
-            {
-                GameObject tile = Instantiate(mapGridTile, new Vector3(index * 5, 0, bindex * 5), new Quaternion(0, 0, 0, 0));
-                colored = !colored;
-                if (colored) {
-                    tile.GetComponent<MeshRenderer>().material.color = inactiveTabColor;
-                }
-            }
-        }
-        Debug.Log("Done generating map!");
-    }
-
+    #region Save and Load Map
     public string GetSaveableData()
     {
         string data = "";
-        foreach(GameObject GO in this.mapTiles)
-        {
-            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine(0,0,0) + "\r\n";
+        for (int index = 0; index < mapSizeWidth; index++) {
+            for (int bindex = 0; bindex < mapSizeLength; bindex++) {
+                data += mapTiles[index, bindex].GetComponent<SaveableObject>().ToSaveableDataLine(index, bindex) + "\r\n";
+            }
         }
         foreach (GameObject GO in this.mapObjects)
         {
-            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine(0,0,0) + "\r\n";
+            data += GO.GetComponent<SaveableObject>().ToSaveableDataLine(0,0) + "\r\n";
         }
         return data;
     }
 
-    public void CreateObjectFromData(string data)
+    public void CreateMapFromData(string[] data)
     {
-
+        this.ClearMap();
+        foreach (string dataLine in data) {
+            List<string> splittedData = dataLine.Split('!').ToList();
+            if (splittedData[0].Equals("true"))
+            {
+                splittedData.RemoveAt(0);
+                GameObject tile = new SaveableObject().CreateTileFromData(splittedData);
+            } else {
+                splittedData.RemoveAt(0);
+                GameObject obj = new SaveableObject().CreateObjectFromData(splittedData);
+            }        
+        }
     }
+    #endregion
 }
